@@ -3,7 +3,9 @@
 This repository contains the setup files/resources for the workshop held by
 our group in Columbia Global Center, Nairobi, and Technical University of Kenya in 2022.
 
-The organizers are Renata Wentzcovitch, George Amolo, Michael Atambo.
+The organizers are [Renata Wentzcovitch](https://www.apam.columbia.edu/faculty/renata-wentzcovitch),
+[George Amolo](https://staff.tukenya.ac.ke/?r=portal/profile/public&id=1636), and
+[Michael Atambo](https://staff.tukenya.ac.ke/?r=portal/profile/public&id=2055).
 The speakers and scheduled events are listed below:
 
 |        Time         |                                  Event                                  |
