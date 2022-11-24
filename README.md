@@ -1,4 +1,4 @@
-# Workshop on Computational Ab initio Quantum Thermodynamics (Nov. 28 -- Dec. 1, 2022)
+# Workshop on Computational _Ab initio_ Quantum Thermodynamics (Nov. 28 -- Dec. 1, 2022)
 
 This repository contains the setup files/resources for the workshop held by
 our group in Columbia Global Center, Nairobi, and Technical University of Kenya in 2022.
