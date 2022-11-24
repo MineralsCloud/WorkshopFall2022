@@ -1,8 +1,10 @@
 ENV["PYTHON"] = ""
 
 using Pkg
+Pkg.update()
 Pkg.add("OhMyREPL")
 Pkg.add("PyCall")
+Pkg.build("PyCall")
 Pkg.add("Unitful")
 Pkg.add("UnitfulAtomic")
 Pkg.add("TypeTree")
@@ -12,5 +14,10 @@ Pkg.add("Plots")
 Pkg.add("Crystallography")
 Pkg.add("SimpleWorkflows")
 Pkg.add("Express")
+Pkg.add("QuantumESPRESSO")
+Pkg.add("QuantumESPRESSOCommands")
+Pkg.build("QuantumESPRESSOCommands")
+using QuantumESPRESSOCommands; QuantumESPRESSOCommands.comonicon_install()
 Pkg.add("QuantumESPRESSOExpress")
 Pkg.add("ExpressCommands")
+using ExpressCommands; ExpressCommands.comonicon_install()
