@@ -150,7 +150,7 @@ bash submit.sh relax
 snakemake -j8 vc_eos
 ```
 
-Check results in `PVE.dat`, `VxP.png`, `FxV.png`.
+Check results in `PVE.dat`, `eos_params.dat`,  `VxP.png`, `FxV.png`.
 
 #### Structure optimization / static equation of states
 
