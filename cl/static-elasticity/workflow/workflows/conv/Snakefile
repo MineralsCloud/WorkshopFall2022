@@ -1,0 +1,82 @@
+configfile: "config.yml"
+
+rule conv_target:
+   input:
+      expand("conv/kpts/{kpts}/scf.in", kpts=config["conv"]["kpts"]),
+      expand("conv/ecutwfc/{ecutwfc}/scf.in", ecutwfc=config["conv"]["ecutwfc"]),
+      expand("conv/kpts/{kpts}/job.sh", kpts=config["conv"]["kpts"]),
+      expand("conv/ecutwfc/{ecutwfc}/job.sh", ecutwfc=config["conv"]["ecutwfc"]),
+      "conv/kpts/jobfile.sh",
+      "conv/ecutwfc/jobfile.sh"
+
+rule conv_plot:
+   input:
+      "conv-kpts.png",
+      "conv-ecutwfc.png"
+
+rule job_sh:
+   input: config["conv"]["job_sh"]
+   output:
+      "{workdir}/job.sh"
+   shell:
+      '''
+      cp {input} {output}
+      '''
+   
+rule job_bundle:
+   input:
+      "templates/job-bundle.sh"
+   output:
+      "conv/{any}/jobfile.sh"
+   shell:
+      '''
+      cp {input} {output}
+      '''
+
+rule kpts_scf:
+   input:
+      scf=config["conv"]["template"],
+      structure="init.qe"
+   output:
+      "conv/kpts/{kpts}/scf.in"
+   params:
+      ecutwfc=config["conv"]["ecutwfc"][0]
+   shell:
+      '''
+      python3 scripts/make-conv.py {input.scf} --kpts {wildcards.kpts} --ecutwfc {params.ecutwfc} > {output}
+      cat {input.structure} >> {output}
+      '''
+
+rule ecutwfc_scf:
+   input:
+      scf=config["conv"]["template"],
+      structure="init.qe"
+   output:
+      "conv/ecutwfc/{ecutwfc}/scf.in"
+   params:
+      kpts=config["conv"]["kpts"][0]
+   shell:
+      '''
+      python3 scripts/make-conv.py {input.scf} --kpts {params.kpts} --ecutwfc {wildcards.ecutwfc} > {output}
+      cat {input.structure} >> {output}
+      '''
+   
+rule kpts_plot:
+   input:
+      expand("conv/kpts/{kpts}/scf.out", kpts=config["conv"]["kpts"])
+   output:
+      "conv-kpts.png"
+   shell:
+      '''
+      python3 scripts/collect-conv.py {input} --output {output}
+      '''
+   
+rule ecutwfc_plot:
+   input:
+      expand("conv/ecutwfc/{ecutwfc}/scf.out", ecutwfc=config["conv"]["ecutwfc"])
+   output:
+      "conv-ecutwfc.png"
+   shell:
+      '''
+      python3 scripts/collect-conv.py {input} --output {output}
+      '''

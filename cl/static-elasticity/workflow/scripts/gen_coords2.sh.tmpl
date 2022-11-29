@@ -1,0 +1,13 @@
+export MV2_USE_RDMA_CM=0
+
+{% include "partials/hpc/" + machine + "/load_qe.sh" %}
+
+scriptdir=$(dirname "$(readlink -f "$0")")
+workdir=$(dirname $1)
+fname=$(basename $1)
+stem=${fname%.*}
+
+pwd
+
+cd ${workdir}
+python3 ${scriptdir}/gen_coords2.py --input ${fname} --output weights.txt

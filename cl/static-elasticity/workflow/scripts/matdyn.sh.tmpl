@@ -1,0 +1,10 @@
+export MV2_USE_RDMA_CM=0
+
+{% include "partials/hpc/" + machine + "/load_qe.sh" %}
+
+workdir=$(dirname $1)
+fname=$(basename $1)
+stem=${fname%.*}
+
+cd ${workdir}
+matdyn.x -in ${fname} 1>${stem}.out 2>${stem}.err
