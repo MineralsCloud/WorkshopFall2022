@@ -74,6 +74,7 @@ dependencies:
 - tqdm
 - snakemake
 - numpy
+- scipy
 - click
 - matplotlib
 - pip
