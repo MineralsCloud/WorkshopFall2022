@@ -1,0 +1,42 @@
+&CONTROL
+    calculation     = 'relax'
+    restart_mode    = 'from_scratch'
+    prefix          = 'pwscf'
+    tstress         = .true.
+    tprnfor         = .true.
+    pseudo_dir      = '/expanse/lustre/projects/col146/chazeon/pseudo'
+    outdir          = './scratch'
+    etot_conv_thr   = 1.0D-6
+    forc_conv_thr   = 1.0D-5
+    nstep           = 200
+/
+
+&SYSTEM
+    ntyp            = 2
+    nat             = 8
+    ecutwfc         = 120.0
+    ecutrho         = 480.0
+    ibrav           = 0
+    occupations     = 'smearing'
+    smearing        = 'gaussian'
+    degauss         = 0.01
+/
+
+&ELECTRONS
+    diagonalization = 'cg'
+    mixing_mode     = 'plain'
+    mixing_beta     = 0.3
+    conv_thr        = 1.0d-8
+/
+
+&IONS
+    ion_dynamics    = 'bfgs'
+/
+
+ATOMIC_SPECIES
+O  1.00  o_lda_v1.2.uspp.F.UPF
+Si 1.00  si_lda_v1.uspp.F.UPF
+
+K_POINTS (automatic)
+    6   6   6   1   1   1
+
