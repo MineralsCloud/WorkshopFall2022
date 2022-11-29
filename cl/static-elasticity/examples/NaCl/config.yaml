@@ -1,0 +1,46 @@
+system:
+  prefix: "pwscf"
+  ntyp: 2
+  nat: 8
+eos:
+  init_structure: "init.qe"
+  volumes:  # volumes in angstrom
+    - 110.0
+    - 120.0
+    - 130.0
+    - 140.0
+    - 150.0
+    - 160.0
+    - 165.0
+  job_sh: "templates/job-relax.sh"
+  template: "templates/relax.in"
+elast:
+  strain_keys: [e1, e4]
+  strain_values: [0.0050, -0.0050]
+  template: "templates/elast.in"
+  job_sh: "templates/job-elast.sh"
+phonon:
+  template:
+    scf: "templates/scf.in"
+    ph: "templates/ph.in"
+  job_sh: "templates/job-ph.sh"
+  matdyn_kpts: [8, 8, 8]
+conv:
+  template: "templates/scf_conv.in"
+  job_sh: "templates/job-conv.sh"
+  kpts:
+    - 2x2x2
+    - 4x4x4
+    - 6x6x6
+    - 8x8x8
+    - 12x12x12
+    - 16x16x16
+    - 24x24x24
+  ecutwfc:
+    - 80
+    - 120
+    - 160
+    - 200
+    - 240
+    - 280
+    - 320

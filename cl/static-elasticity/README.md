@@ -86,7 +86,11 @@ module load anaconda3/2020.11
 conda env create -f mphys.yaml
 ```
 
-Then download the provided workflow files from `/home/chazeon/PROJECT/20221128-NaCl-LDA-uspp-template`.
+Then download the provided workflow files
+
+````bash
+cp /expanse/lustre/projects/col146/chazeon/20221128-NaCl-LDA-uspp-template .
+````
 
 ### Get pseudopotentials
 
@@ -133,29 +137,6 @@ conda activate mphys
 ```
 
 ### Structure optimization / static equation of states
-
-For NaCl, we change the `volume` under `eos` section in `config.yml`:
-
-```yaml
-eos:
-  init_structure: "init.qe"
-  volumes:  # volumes in angstrom
-  - 32.0
-
-  - 34.0
-
-  - 36.0
-  - 37.0
-  - 38.0
-  - 39.0
-  - 40.0
-  - 41.0
-  - 42.0
-  job_sh: "templates/job-relax.sh"
-  template: "templates/relax.in"
-```
-
-
 
 ```bash
 # create input files
