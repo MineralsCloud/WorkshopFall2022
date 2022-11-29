@@ -1,4 +1,4 @@
-# Workshop on Computational _Ab initio_ Quantum Thermodynamics (Nov. 28 -- Dec. 1, 2022)
+# Workshop on Computational _Ab initio_ Quantum Thermodynamics (Nov. 28 – Dec. 1, 2022)
 
 This repository contains the setup files/resources for the workshop held by
 our group in Columbia Global Center, Nairobi, and Technical University of Kenya in 2022.
@@ -10,8 +10,8 @@ The speakers and scheduled events are listed below:
 
 |        Time         |                                                         Event                                                          |
 | :-----------------: | :--------------------------------------------------------------------------------------------------------------------: |
-|   Day 1 (Nov. 29)   |                                                                                                                        |
-|     Kenya Time      |                                                        Sessions                                                        |
+| **Day 1 (Nov. 29)** |                                                                                                                        |
+|   **Kenya Time**    |                                                      **Sessions**                                                      |
 |    08:45 – 09:00    |                                                        Welcome                                                         |
 |    09:00 – 10:00    |                                 Renata Wentzcovitch – Thermodynamics with QHA overview                                 |
 |    10:00 – 11:00    |                                         John Perdew (video) – DFT Introduction                                         |
