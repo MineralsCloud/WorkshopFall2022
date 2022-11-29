@@ -14,7 +14,7 @@
 &SYSTEM
     ntyp            = 2
     nat             = 6
-    ecutwfc         = 160.0
+    ecutwfc         = 80.0
     ecutrho         = 640.0
     ibrav           = 0
     occupations     = 'smearing'

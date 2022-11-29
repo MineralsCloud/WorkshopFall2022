@@ -13,7 +13,7 @@ eos:
   job_sh: "templates/job-relax.sh"
   template: "templates/relax.in"
 elast:
-  strain_keys: [e1, e4]
+  strain_keys: [e1, e2, e3, e4, e5, e6]
   strain_values: [0.0050, -0.0050]
   template: "templates/elast.in"
   job_sh: "templates/job-elast.sh"
