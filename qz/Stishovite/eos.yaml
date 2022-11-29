@@ -1,0 +1,23 @@
+recipe: eos
+cli:
+  mpi:
+    np: 112
+template: template.in
+fixed:
+  pressures:
+    unit: GPa
+    values:
+      - -4
+      - -2
+      - 0
+      - 8
+      - 16
+      - 24
+      - 32
+      - 40
+trial_eos:
+  type: bm3
+  values:
+    - 318.5664396520199 bohr^3
+    - 318.32004318801023 GPa
+    - 4.118299233807037

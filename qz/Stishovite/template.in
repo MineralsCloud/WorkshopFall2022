@@ -1,0 +1,39 @@
+&CONTROL
+    calculation = 'scf'
+    verbosity = 'high'
+    tstress = .true.
+    tprnfor = .true.
+    outdir = 'tmp'
+    prefix = 'Stishovite'
+    disk_io = 'high'
+    pseudo_dir = 'pseudo'
+/
+&SYSTEM
+    ibrav = 6
+    celldm(1) = 7.932519377831478
+    celldm(3) = 0.6382143968
+    nat = 6
+    ntyp = 2
+    ecutwfc = 80.0
+    ecutrho = 320.0
+    ecutfock = 320.0
+/
+&ELECTRONS
+    conv_thr = 1.0e-10
+/
+&IONS
+/
+&CELL
+/
+ATOMIC_SPECIES
+      Si   28.086000000 Si.pbesol-nl-kjpaw_psl.1.0.0.UPF
+       O   15.999000000 O.pbesol-n-kjpaw_psl.1.0.0.UPF
+ATOMIC_POSITIONS { crystal }
+      Si    0.000000000    0.000000000    0.000000000
+      Si    0.500000000    0.500000000    0.500000000
+       O    0.306700000    0.306700000    0.000000000
+       O    0.693300000    0.693300000    0.000000000
+       O    0.193300000    0.806700000    0.500000000
+       O    0.806700000    0.193300000    0.500000000
+K_POINTS { automatic }
+        4     4     6     1     1     1
