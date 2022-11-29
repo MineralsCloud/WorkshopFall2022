@@ -1,0 +1,30 @@
+&control
+calculation='scf'
+verbosity = 'high'
+pseudo_dir  = 'pseudo'
+prefix='NaCl_B2'
+outdir   = 'tmp'
+tprnfor = .true.
+tstress = .true.
+/
+&system
+ibrav=1
+celldm(1)=3.5524086015084246
+nat=2
+ntyp=2
+ecutwfc = 90
+/
+&electrons
+diagonalization='david'
+mixing_beta=0.7
+conv_thr=1.0d-10
+/
+ATOMIC_SPECIES
+Na 22.989771 Na.pbesol-spnl-kjpaw_psl.1.0.0.UPF
+Cl 35.452999 Cl.pbesol-nl-kjpaw_psl.1.0.0.UPF
+
+ATOMIC_POSITIONS (crystal)
+Na    0.00000    0.00000    0.00000
+Cl    0.50000    0.50000    0.50000
+K_POINTS automatic
+5 5 5 0 0 0
