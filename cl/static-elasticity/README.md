@@ -19,6 +19,7 @@ tree
 ├── Snakefile
 ├── config.yml 	<- workflow configuration file
 ├── init.qe			<- inital crystal structure
+├── submit.sh		<- submit job in subscripts
 ├── scripts			<- workflow scripts
 │   ├── check-done.sh
 │   ├── check-ph-final.sh
@@ -55,12 +56,37 @@ See also
 
 ### Setup workflow environment
 
-```bash
-module load anaconda3/2020.11
-conda env create -f mphys.yml
+Create a `mphys.yaml`:
+
+```yaml
+name: mphys2
+channels:
+- conda-forge
+- bioconda
+dependencies:
+- python=3.9
+- setuptools
+- ase
+- pandas
+- scipy
+- pip
+- jinja2
+- tqdm
+- snakemake
+- numpy
+- click
+- matplotlib
+- pip
 ```
 
-Then download the provided workflow files from `xxx`.
+Then run the following to create the environment:
+
+```bash
+module load anaconda3/2020.11
+conda env create -f mphys.yaml
+```
+
+Then download the provided workflow files from `/home/chazeon/PROJECT/20221128-NaCl-LDA-uspp-template`.
 
 ### Get pseudopotentials
 
@@ -98,22 +124,45 @@ See also
 #### Enter debug node
 
 ```bash
-# enter debug node
-srun --partition=debug --pty --account=col146 --ntasks-per-node=2 --nodes=1 --mem=96G -t 00:30:00 --wait=0 --export=ALL /bin/zsh
+# enter interactive debug node
+srun --partition=debug --pty --account=col146 --ntasks-per-node=2 --nodes=1 --mem=96G -t 00:30:00 --wait=0 --export=ALL /bin/bash
 
 # enter the environment
+module load anaconda3/2020.11
 conda activate mphys
 ```
 
 ### Structure optimization / static equation of states
+
+For NaCl, we change the `volume` under `eos` section in `config.yml`:
+
+```yaml
+eos:
+  init_structure: "init.qe"
+  volumes:  # volumes in angstrom
+  - 32.0
+
+  - 34.0
+
+  - 36.0
+  - 37.0
+  - 38.0
+  - 39.0
+  - 40.0
+  - 41.0
+  - 42.0
+  job_sh: "templates/job-relax.sh"
+  template: "templates/relax.in"
+```
+
+
 
 ```bash
 # create input files
 snakemake -j8 vc_target
 
 # submit jobs
-cd relax
-CWD=$(pwd) ; for j in $(find | grep job.sh) ; do ; cd $CWD/$(dirname $j) ; pwd ; sbatch job.sh ; done ; cd $CWD
+bash submit.sh relax
 
 # collect results
 snakemake -j8 eos
@@ -123,7 +172,7 @@ Check results in `PVE.dat`, `VxP.png`, `FxV.png`.
 
 #### Structure optimization / static equation of states
 
-For cubic system, we only need `e1` and `e4`
+For cubic system, we only need `e1` and `e4`, we change the `elast` section in `config.yml`:
 
 ```yaml
 elast:
@@ -140,8 +189,7 @@ Then run the following command,
 snakemake -j8 elast_target
 
 # go submit jobs
-cd elast
-CWD=$(pwd) ; for j in $(find | grep job.sh) ; do ; cd $CWD/$(dirname $j) ; pwd ; sbatch job.sh ; done ; cd $CWD
+bash submit.sh elast
 ```
 
 After jobs are finished, collect results:
