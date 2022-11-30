@@ -1,0 +1,25 @@
+recipe: eos
+cli:
+  mpi:
+    np: 8
+template: template.in
+save:
+  status: saved.jld2
+fixed:
+  pressures:
+    unit: GPa
+    values:
+      - -5
+      - 0
+      - 5
+      - 10
+      - 15
+      - 20
+      - 25
+      - 30
+trial_eos:
+  type: bm3
+  values:
+    - 44.83 angstrom^3
+    - 35.1 GPa
+    - 4.21
