@@ -1,6 +1,6 @@
-# Static EoS & elasticity workflow
+# Hands on static EoS & elasticity calculation
 
-
+In this hands on session, we practice using a static elasticity workflow to calculate static elastic coefficients for some simple system.
 
 ## Theory
 
