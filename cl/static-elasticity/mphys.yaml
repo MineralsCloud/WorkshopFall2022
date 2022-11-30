@@ -1,0 +1,19 @@
+name: mphys
+channels:
+- conda-forge
+- bioconda
+dependencies:
+- python=3.9
+- setuptools
+- ase
+- pandas
+- scipy
+- pip
+- jinja2
+- tqdm
+- snakemake
+- numpy
+- scipy
+- click
+- matplotlib
+- pip
