@@ -70,7 +70,6 @@ channels:
 dependencies:
 - python=3.9
 - setuptools
-- ase
 - pandas
 - scipy
 - pip
