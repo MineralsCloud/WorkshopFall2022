@@ -4,7 +4,7 @@ cli:
     np: 112
 template: template.in
 save:
-  status: status.jls
+  status: status.jld2
 fixed:
   pressures:
     unit: GPa
