@@ -60,13 +60,20 @@ See also
 
 ### Setup workflow environment
 
-Install miniconda first
+Install micromamba first
 
 ```bash
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-$(uname)-$(uname -m).sh
-bash Miniconda3-latest-$(uname)-$(uname -m).sh
+curl micro.mamba.pm/install.sh | bash
 source ~/.bashrc
 ```
+
+> Or alternatively, install miniconda
+> 
+> ```bash
+> wget https://repo.anaconda.com/miniconda/Miniconda3-latest-$(uname)-$(uname -m).sh
+> bash Miniconda3-latest-$(uname)-$(uname -m).sh
+> source ~/.bashrc
+> ```
 
 Create a `mphys.yaml`:
 
@@ -89,18 +96,24 @@ dependencies:
 - click
 - matplotlib
 - pip
+- pip:
+  - sh
+  - pint
 ```
 
 Then run the following to create the environment:
 
 ```bash
-conda env create -f mphys.yaml
+micromamba create -f mphys.yaml
+
+# If using conda:
+# conda env create -f mphys.yaml
 ```
 
 Then download the provided workflow files
 
 ````bash
-cp /expanse/lustre/projects/col146/chazeon/20221128-NaCl-LDA-uspp-template .
+cp -rv /expanse/lustre/projects/col146/chazeon/20221128-NaCl-LDA-uspp-template .
 ````
 
 ### Get pseudopotentials
@@ -143,8 +156,9 @@ See also
 srun --partition=debug --pty --account=col146 --ntasks-per-node=2 --nodes=1 --mem=96G -t 00:30:00 --wait=0 --export=ALL /bin/bash
 
 # enter the environment
-module load anaconda3/2020.11
-conda activate mphys
+micromamba activate mphys
+# if using conda
+# conda activate mphys
 ```
 
 ### Structure optimization / static equation of states
