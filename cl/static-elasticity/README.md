@@ -177,6 +177,10 @@ snakemake -j8 vc_eos
 
 Check results in `PVE.dat`, `eos_params.dat`,  `VxP.png`, `FxV.png`.
 
+For NaCl-B1, the `eos_params.dat` should give $V_0 = 164.11$ Å$^3$,  $k_0 = 32.6$ GPa, $k' = 4.65$, the EoS should look like:
+
+![](./attachments/NaCl-B1-VxP.png)
+
 #### Structure optimization / static equation of states
 
 For cubic system, we only need `e1` and `e4`, we change the `elast` section in `config.yml`:
@@ -207,4 +211,6 @@ After jobs are finished, collect results:
 snakemake -j8 elast_dat
 ```
 
-Check results in `elast.dat`.
+Check results in `elast.dat`, it should be
+
+![](./attachments/NaCl-B1-Cij.png)
