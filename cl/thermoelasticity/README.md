@@ -47,19 +47,23 @@ dependencies:
 
 ```
 
-Then install using
+Then install using conda / micromamba
 
 ```bash
-conda env create -f cij.yaml
+micromamba create -f cij.yaml
+
+# with conda
+# conda env create -f cij.yaml
 ```
 
 To activate the environment, run the following
 
 ```bash
-conda activate cij
+micromamba activate cij
+
+# with conda
+# conda activate cij
 ```
-
-
 
 ## Running the akimotoite example
 

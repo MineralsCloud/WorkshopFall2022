@@ -19,4 +19,4 @@ module load openmpi
 module load quantum-espresso/6.7.0-openblas
 
 ### Run QE
-mpirun --map-by core --mca btl_openib_if_include "mlx5_2:1" --mca btl openib,self,vader pw.x -input elast.in -npool 4 1> elast.out 2> elast.err
+mpirun --map-by core --mca btl_openib_if_include "mlx5_2:1" --mca btl openib,self,vader pw.x -input elast.in 1> elast.out 2> elast.err
