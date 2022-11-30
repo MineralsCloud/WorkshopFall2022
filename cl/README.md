@@ -1,5 +1,5 @@
 This directory contains the following contents:
 
-- [Hands on static EoS & elasticity calculation](cl/static-elasticity)
-- [Hands on thermoelasticity calculations](cl/thermoelasticity)
-- [How to install QE with conda](cl/install-quantum-espresso-via-conda.md)
+- [Hands on static EoS & elasticity calculation](./static-elasticity)
+- [Hands on thermoelasticity calculations](./thermoelasticity)
+- [How to install QE with conda](./install-quantum-espresso-via-conda.md)
