@@ -4,7 +4,11 @@
 
 ## Theory
 
-We use the basic stress vs strain method to obtain the elastic coefficients.
+We use the basic stress vs strain method (Hooke's law)
+$$
+\sigma_{ij} = C_{ijkl} \, \epsilon_{kl}
+$$
+to obtain the elastic coefficients.
 
 See also
 
