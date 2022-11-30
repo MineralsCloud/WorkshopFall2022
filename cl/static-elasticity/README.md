@@ -60,6 +60,14 @@ See also
 
 ### Setup workflow environment
 
+Install miniconda first
+
+```bash
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-$(uname)-$(uname -m).sh
+bash Miniconda3-latest-$(uname)-$(uname -m).sh
+source ~/.bashrc
+```
+
 Create a `mphys.yaml`:
 
 ```yaml
@@ -86,7 +94,6 @@ dependencies:
 Then run the following to create the environment:
 
 ```bash
-module load anaconda3/2020.11
 conda env create -f mphys.yaml
 ```
 
