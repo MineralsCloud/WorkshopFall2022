@@ -14,8 +14,8 @@
 &SYSTEM
     ntyp            = 2
     nat             = 8
-    ecutwfc         = 80.0
-    ecutrho         = 640.0
+    ecutwfc         = 40.0
+    ecutrho         = 320.0
     ibrav           = 0
     occupations     = 'smearing'
     smearing        = 'gaussian'
@@ -38,5 +38,5 @@ O  1.00  o_lda_v1.2.uspp.F.UPF
 Mg 1.00  mg_lda_v1.4.uspp.F.UPF
 
 K_POINTS (automatic)
-    6   6   6   1   1   1
+    2   2   2   1   1   1
 
