@@ -1,0 +1,24 @@
+&control
+calculation='scf'
+pseudo_dir  = './pseudo'
+prefix='Ge'
+outdir   = './'
+/
+&system
+ibrav=2
+celldm(1)=7.957636
+nat=2
+ntyp=1
+ecutwfc = 55
+/
+&electrons
+conv_thr=1.0d-10
+/
+ATOMIC_SPECIES
+Ge    72.64    Ge.pz-dn-kjpaw_psl.0.2.2.UPF
+
+ATOMIC_POSITIONS (crystal)
+Ge    0.00000    0.00000    0.00000
+Ge    0.75000    0.75000    0.75000
+K_POINTS automatic
+6 6 6 1 1 1

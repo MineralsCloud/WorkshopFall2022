@@ -1,0 +1,41 @@
+&control
+calculation='scf'
+verbosity = 'high'
+pseudo_dir  = 'pseudo'
+prefix='Lime'
+outdir   = 'temp_project'
+tprnfor = .true.
+tstress = .true.
+/
+&system
+ibrav=0
+celldm(1)=9.09903
+nat=2
+ntyp=2
+ecutwfc = 90
+/
+&electrons
+diagonalization='david'
+mixing_beta=0.7
+conv_thr=1.0d-10
+/
+&IONS
+/
+&CELL
+/
+ATOMIC_SPECIES
+Ca 40.078 Ca.pbesol-spn-kjpaw_psl.1.0.0.UPF
+O 15.999 O.pbesol-n-kjpaw_psl.1.0.0.UPF
+
+CELL_PARAMETERS (alat=  9.09903000)
+  -0.495109358  -0.000000000   0.495109358
+  -0.000000000   0.495109358   0.495109358
+  -0.495109358   0.495109358   0.000000000
+
+ATOMIC_POSITIONS (crystal)
+Ca           -0.0000000000       -0.0000000000        0.0000000000
+O             0.5000000000        0.5000000000        0.5000000000
+
+K_POINTS automatic
+5 5 5 0 0 0
+
