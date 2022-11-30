@@ -1,0 +1,5 @@
+&INPUT
+    fildyn = 'dyn'
+    flfrc = 'pwscf.fc'
+    zasr =  'simple'
+/

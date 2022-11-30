@@ -1,10 +1,14 @@
-# Static EoS & elasticity workflow
+# Hands on static EoS & elasticity calculation
 
-
+In this hands on session, we practice using a static elasticity workflow to calculate static elastic coefficients for some simple system.
 
 ## Theory
 
-We use the basic stress vs strain method to obtain the elastic coefficients.
+We use the basic stress vs strain method (Hooke's law)
+
+$$\sigma_{ij} = C_{ijkl} \\, \epsilon_{kl}$$
+
+to obtain the elastic coefficients.
 
 See also
 
@@ -56,17 +60,24 @@ See also
 
 ### Setup workflow environment
 
+Install miniconda first
+
+```bash
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-$(uname)-$(uname -m).sh
+bash Miniconda3-latest-$(uname)-$(uname -m).sh
+source ~/.bashrc
+```
+
 Create a `mphys.yaml`:
 
 ```yaml
-name: mphys2
+name: mphys
 channels:
 - conda-forge
 - bioconda
 dependencies:
 - python=3.9
 - setuptools
-- ase
 - pandas
 - scipy
 - pip
@@ -74,6 +85,7 @@ dependencies:
 - tqdm
 - snakemake
 - numpy
+- scipy
 - click
 - matplotlib
 - pip
@@ -82,7 +94,6 @@ dependencies:
 Then run the following to create the environment:
 
 ```bash
-module load anaconda3/2020.11
 conda env create -f mphys.yaml
 ```
 
@@ -94,10 +105,10 @@ cp /expanse/lustre/projects/col146/chazeon/20221128-NaCl-LDA-uspp-template .
 
 ### Get pseudopotentials
 
-Here we use LDA ultrasoft potentials, download from [GBRV pseudopotentials](http://www.physics.rutgers.edu/gbrv/):
+Here we use LDA ultrasoft potentials. The following command download Vanderbilt ultrasoft pseudopotentials to `pseudo` directory from the [GBRV pseudopotentials](http://www.physics.rutgers.edu/gbrv/) website:
 
 ```bash
-wget -qO- http://www.physics.rutgers.edu/gbrv/all_lda_UPF_v1.5.tar.gz | tar -xzv
+mkdir pseudo && wget -qO- http://www.physics.rutgers.edu/gbrv/all_lda_UPF_v1.5.tar.gz | tar -xzv -C pseudo
 ```
 
 See
@@ -144,12 +155,13 @@ snakemake -j8 vc_target
 
 # submit jobs
 bash submit.sh relax
+# or bash run-serial.sh relax
 
 # collect results
-snakemake -j8 eos
+snakemake -j8 vc_eos
 ```
 
-Check results in `PVE.dat`, `VxP.png`, `FxV.png`.
+Check results in `PVE.dat`, `eos_params.dat`,  `VxP.png`, `FxV.png`.
 
 #### Structure optimization / static equation of states
 
@@ -171,6 +183,7 @@ snakemake -j8 elast_target
 
 # go submit jobs
 bash submit.sh elast
+# or bash run-serial.sh elast
 ```
 
 After jobs are finished, collect results:

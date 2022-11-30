@@ -1,0 +1,11 @@
+&INPUT
+    asr = 'simple'
+    fldos = 'pwscf.dos'
+    flfrc = 'pwscf.fc'
+    flfrq = 'pwscf.freq'
+    fleig = 'pwscf.eig'
+    flvec = 'pwscf.vec'
+    q_in_band_form = .false.
+    q_in_cryst_coord = .true.
+    eigen_similarity = .true.
+/

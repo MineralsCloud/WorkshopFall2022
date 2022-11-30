@@ -24,24 +24,23 @@ Prepare the following `environment.yml` file:
 ```yaml
 name: qe
 channels:
-  - conda-forge
-  - defaults
+- conda-forge
+- defaults
 dependencies:
-  - qe
+- qe
 ```
 
 In your terminal, go to the directory that contains the `environment.yml` file, and construct the conda environment based on the `environment.yml` file to the `./env` subdirectory by
 
 ```bash
-conda env create \
-    -f environment.yml \    # Name of the environment YAML spec
-    -p $(pwd)/env           # Location for the environment to be created
+conda env create -f environment.yml
+
 ```
 
 After the environment construction is finished, you can enter the conda environment by
 
 ```bash
-conda activate $(pwd)/envs/qe
+conda activate qe
 ```
 
 ## Test run

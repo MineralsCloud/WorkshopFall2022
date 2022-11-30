@@ -1,0 +1,4 @@
+include: "workflows/elast/Snakefile"
+include: "workflows/eos/Snakefile"
+include: "workflows/ph/Snakefile"
+include: "workflows/conv/Snakefile"

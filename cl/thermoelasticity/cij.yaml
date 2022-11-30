@@ -1,0 +1,17 @@
+name: cij
+channels:
+- conda-forge
+- defaults
+dependencies:
+- python=3.10
+- matplotlib
+- scipy
+- pandas
+- yaml
+- pyyaml
+- numba
+- numpy
+- pip
+- pip:
+  - git+https://github.com/MineralsCloud/qha.git@master
+  - git+https://github.com/MineralsCloud/cij.git@dev

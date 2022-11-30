@@ -1,0 +1,61 @@
+configfile: "config.yml"
+
+rule vc_target:
+    input:
+        expand("relax/V{volume}/relax.in", volume=config["eos"]["volumes"])
+
+rule vc_input:
+    input:
+        job_sh=config["eos"]["job_sh"],
+        template=config["eos"]["template"],
+        structure="relax/{workdir}/init.qe"
+    output:
+        qe_input="relax/{workdir}/relax.in",
+        job_sh="relax/{workdir}/job.sh"
+    shell:
+        '''
+        cat {input.template} > {output.qe_input}
+        cat {input.structure} >> {output.qe_input}
+        cp {input.job_sh} {output.job_sh}
+        '''
+
+rule vc_structure:
+    input:
+        structure=config["eos"]["init_structure"]
+    output:
+        structure="relax/V{volume}/init.qe"
+    shell:
+        '''
+        cat {input.structure} | python3 scripts/scale-lattice.py -v {wildcards.volume} 1> {output.structure}
+        '''
+
+rule vc_final:
+    params:
+        nat=config["system"]["nat"]
+    input:
+        qe_output="{workdir}/relax.out"
+    output:
+        structure="{workdir}/final.qe",
+        done="{workdir}/relax.out.done",
+        final="{workdir}/relax.out.final"
+    shell:
+        '''
+        bash scripts/check-done.sh {input.qe_output}
+        bash scripts/check-rlx-final.sh {input.qe_output}
+        bash scripts/dump-structure.sh {params.nat} {input.qe_output} 1> {output.structure}
+        '''
+
+rule vc_eos:
+    input:
+        output=expand("relax/V{volume}/relax.out", volume=config["eos"]["volumes"]),
+        done=expand("relax/V{volume}/relax.out.done", volume=config["eos"]["volumes"]),
+        final=expand("relax/V{volume}/relax.out.final", volume=config["eos"]["volumes"]),
+    output:
+        PVE="PVE.dat",
+        eos_params="eos_params.dat",
+    shell:
+        '''
+        python3 scripts/extract-pve.py {input.output} 1> {output.PVE}
+        python3 scripts/plot-eos.py {output.PVE}
+        python3 scripts/get-eos-params.py {output.PVE} 1> {output.eos_params}
+        '''

@@ -1,5 +1,5 @@
 &CONTROL
-    calculation     = 'relax'
+    calculation     = 'vc-relax'
     restart_mode    = 'from_scratch'
     prefix          = 'pwscf'
     tstress         = .true.
@@ -21,16 +21,21 @@
     smearing        = 'gaussian'
     degauss         = 0.01
 /
-
 &ELECTRONS
     diagonalization = 'cg'
     mixing_mode     = 'plain'
     mixing_beta     = 0.3
-    conv_thr        = 1.0d-8
+    conv_thr        = 1.0D-8
+    scf_must_converge = .false.
 /
 
 &IONS
     ion_dynamics    = 'bfgs'
+/
+
+&CELL
+    cell_dynamics   = 'bfgs'
+    cell_dofree     = 'shape'
 /
 
 ATOMIC_SPECIES
@@ -38,5 +43,5 @@ Na  1.00  na_lda_v1.5.uspp.F.UPF
 Cl  1.00  cl_lda_v1.4.uspp.F.UPF
 
 K_POINTS (automatic)
-    2   2   2   1   1   1
+2 2 2 1 1 1
 

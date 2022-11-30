@@ -1,0 +1,89 @@
+configfile: "config.yml"
+
+rule elast_target:
+    input:
+        expand("elast/V{volume}/{strain_key}/{strain_value}/elast.in",
+            volume=config["eos"]["volumes"],
+            strain_key=config["elast"]["strain_keys"],
+            strain_value=config["elast"]["strain_values"])
+
+rule elast_in:
+    input:
+        structure="{workdir}/init.qe",
+        template=config["elast"]["template"],
+        job_sh=config["elast"]["job_sh"]
+    output:
+        qe_input="{workdir}/elast.in",
+        job_sh="{workdir}/job.sh"
+    shell:
+        '''
+        cat {input.template} >> {output.qe_input}
+        cat {input.structure} >> {output.qe_input}
+        cp {input.job_sh} {output.job_sh}
+        '''
+
+rule qe_inputs:
+    input:
+        structure="relax/V{volume}/final.qe",
+    output:
+        structure="elast/V{volume}/{strain_key}/{strain_value}/init.qe"
+    shell:
+        '''
+        cat {input.structure} | python3 scripts/strain-lattice.py -e {wildcards.strain_key} -v {wildcards.strain_value} > {output.structure}
+        '''
+
+rule elast_final:
+    input:
+        qe_output="{workdir}/elast.out"
+    output:
+        done="{workdir}/elast.out.done",
+        final="{workdir}/elast.out.final"
+    shell:
+        '''
+        bash scripts/check-done.sh {input.qe_output}
+        bash scripts/check-rlx-final.sh {input.qe_output}
+        '''
+
+
+rule elast_dat:
+    input:
+        cij=expand("elast/V{volume}/cij.dat",
+            volume=config["eos"]["volumes"]),
+        structure=expand("relax/V{volume}/final.qe",
+            volume=config["eos"]["volumes"]),
+        pve="PVE.dat"
+    output:
+        elast="elast.dat"
+    shell:
+        '''
+        python3 scripts/collect-cij.py {input.cij} --pve {input.pve} > {output.elast}
+        echo "" >> {output.elast}
+        echo "lattic_a  lattice_b  lattice_c" >> {output.elast}
+        python3 scripts/get-lattice-params.py {input.structure} 1>> {output.elast}
+        '''
+    
+rule cij_dat:
+    params:
+        strain=config["elast"]["strain_values"][0]
+    input:
+        elast_out=expand(
+            "{{volume_dir}}/{strain_key}/{strain_value}/elast.out",
+            strain_key=config["elast"]["strain_keys"],
+            strain_value=config["elast"]["strain_values"]
+        ),
+        elast_done=expand(
+            "{{volume_dir}}/{strain_key}/{strain_value}/elast.out.done",
+            strain_key=config["elast"]["strain_keys"],
+            strain_value=config["elast"]["strain_values"]
+        ),
+        elast_final=expand(
+            "{{volume_dir}}/{strain_key}/{strain_value}/elast.out.final",
+            strain_key=config["elast"]["strain_keys"],
+            strain_value=config["elast"]["strain_values"]
+        )
+    output:
+        cij="{volume_dir}/cij.dat"
+    shell:
+        '''
+        python3 scripts/get-cij-tensor.py {wildcards.volume_dir} --strain {params.strain} 1> {output.cij}
+        '''

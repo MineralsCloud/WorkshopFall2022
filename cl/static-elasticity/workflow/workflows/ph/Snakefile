@@ -1,0 +1,147 @@
+configfile: "config.yml"
+
+rule ph_target:
+    input:
+        expand("ph/V{volume}/ph.in",
+            volume=config["eos"]["volumes"]),
+        expand("ph/V{volume}/scf.in",
+            volume=config["eos"]["volumes"])
+
+rule ph_in:
+    input:
+        structure="{workdir}/init.qe",
+        template_scf=config["phonon"]["template"]["scf"],
+        template_ph=config["phonon"]["template"]["ph"],
+        job_sh=config["phonon"]["job_sh"]
+    output:
+        scf_in="{workdir}/scf.in",
+        ph_in="{workdir}/ph.in",
+        job_sh="{workdir}/job.sh"
+    shell:
+        '''
+        cat {input.template_scf} > {output.scf_in}
+        cat {input.structure} >> {output.scf_in}
+        cp {input.template_ph} {output.ph_in}
+        cp {input.job_sh} {output.job_sh}
+        '''
+
+rule ph_structures:
+    input:
+        structure="relax/V{volume}/final.qe"
+    output:
+        structure="ph/V{volume}/init.qe"
+    shell:
+        '''
+        cp {input.structure} {output.structure}
+        '''
+
+rule ph_final:
+    input:
+        scf_out="{workdir}/scf.out",
+        ph_out="{workdir}/ph.out"
+    output:
+        scf_done="{workdir}/scf.out.done",
+        ph_done="{workdir}/ph.out.done",
+        final="{workdir}/ph.final"
+    shell:
+        '''
+        bash scripts/check-done.sh {input.scf_out}
+        bash scripts/check-done.sh {input.ph_out}
+        bash scripts/check-ph-final.sh {wildcards.workdir}
+        '''
+
+rule q2r:
+    input:
+        ph_final="{workdir}/ph.final",
+        template="templates/q2r.in"
+    output:
+        input="{workdir}/q2r.in",
+        out="{workdir}/q2r.out",
+        err="{workdir}/q2r.err",
+        done="{workdir}/q2r.out.done",
+        fc=expand("{{workdir}}/{prefix}.fc", prefix=config["system"]["prefix"])
+    shell:
+        '''
+        cp {input.template} {output.input}
+        bash scripts/q2r.sh {output.input}
+        bash scripts/check-done.sh {output.out}
+        '''
+
+rule matdyn_qha:
+    input:
+        ph_final="{workdir}/ph.final",
+        template="templates/matdyn-qha.in",
+        fc=expand("{{workdir}}/{prefix}.fc", prefix=config["system"]["prefix"]),
+        weights="weights/weights.txt"
+    output:
+        input="{workdir}/matdyn-qha.in",
+        out="{workdir}/matdyn-qha.out",
+        err="{workdir}/matdyn-qha.err",
+        done="{workdir}/matdyn-qha.out.done",
+        freq=expand("{{workdir}}/{prefix}.freq", prefix=config["system"]["prefix"]),
+        eig=expand("{{workdir}}/{prefix}.eig", prefix=config["system"]["prefix"]),
+        vec=expand("{{workdir}}/{prefix}.vec", prefix=config["system"]["prefix"])
+    shell:
+        '''
+        cp {input.template} {output.input}
+        echo "`cat {input.weights}`" | wc -l >> {output.input}
+        cat {input.weights} >> {output.input}
+        bash scripts/matdyn.sh {output.input}
+        bash scripts/check-done.sh {output.out}
+        '''
+
+rule input01:
+    params:
+        comment=config["system"]["prefix"]
+    input:
+        expand("ph/V{volume}/ph.final", volume=config["eos"]["volumes"]),
+        expand("ph/V{volume}/ph.out.done", volume=config["eos"]["volumes"]),
+        freq=expand("ph/V{volume}/{prefix}.freq", prefix=config["system"]["prefix"], volume=config["eos"]["volumes"]),
+        weights="weights/weights.txt"
+    output:
+        input01="input01"
+    shell:
+        '''
+        python3 scripts/make-input01.py -c {params.comment} {input.freq} > {output.input01}
+        echo "" >> {output.input01}
+        echo "weights" >> {output.input01}
+        cat {input.weights} >> {output.input01}
+        '''
+
+rule input01_ordered:
+    params:
+        prefix=config["system"]["prefix"],
+        comment=config["system"]["prefix"]
+    input:
+        expand("ph/V{volume}/ph.final", volume=config["eos"]["volumes"]),
+        expand("ph/V{volume}/ph.out.done", volume=config["eos"]["volumes"]),
+        freq=expand("ph/V{volume}/{prefix}.freq", prefix=config["system"]["prefix"], volume=config["eos"]["volumes"]),
+        eig=expand("ph/V{volume}/{prefix}.eig", prefix=config["system"]["prefix"], volume=config["eos"]["volumes"]),
+        weights="weights/weights.txt"
+    output:
+        input01="input01.ordered"
+    shell:
+        '''
+        python3 scripts/make-input01.py --sort-by {params.prefix}.eig -c {params.comment} {input.freq} > {output.input01}
+        echo "" >> {output.input01}
+        echo "weights" >> {output.input01}
+        cat {input.weights} >> {output.input01}
+        '''
+
+rule weights_target:
+    params:
+        kpts=expand("{nk1},{nk2},{nk3}",
+            nk1=config["phonon"]["matdyn_kpts"][0],
+            nk2=config["phonon"]["matdyn_kpts"][1],
+            nk3=config["phonon"]["matdyn_kpts"][2],
+        )
+    input:
+        scf=expand("ph/V{volume}/scf.in", volume=config["eos"]["volumes"][0])
+    output:
+        input="weights/weights.in",
+        weights="weights/weights.txt"
+    shell:
+        '''
+        python3 scripts/make-weights-input.py {input.scf} --nk {params.kpts} > {output.input}
+        bash scripts/gen_coords2.sh {output.input}
+        '''
