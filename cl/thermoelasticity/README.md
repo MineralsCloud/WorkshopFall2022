@@ -19,7 +19,7 @@ See
 If you already have anaconda, just run:
 
 ```bash
-python3 -m pip install -U cij
+python3 -m pip install -U git+https://github.com/MineralsCloud/cij.git@dev
 ```
 
 ### Install using `conda`
