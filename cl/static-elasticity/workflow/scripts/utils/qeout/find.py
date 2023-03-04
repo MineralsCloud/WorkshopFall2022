@@ -27,7 +27,7 @@ def find_volume(fname):
 
 
 def find_structure(fname, nat: int):
-    ret = sh.grep("CELL_PARAMETERS",, "-A", 3, fname)
+    ret = sh.grep("CELL_PARAMETERS", "-A", 3, fname)
     _ret = "\n".join(ret.stdout.decode().split("\n")[-5:])
     cell_unit = _ret.split("\n")[0].strip().split()[1][1:-1]
     lattice_parameter = numpy.loadtxt(io.StringIO(_ret), skiprows=1)
