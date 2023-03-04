@@ -10,10 +10,7 @@ from utils.voigt import e_
 import pandas
 
 def get_stress_tensor(fname) -> numpy.ndarray:
-    out = sh.grep("total   stress", "-A", 3, fname)
-    out = sh.tail(out, "-3")
-    out = sh.cut(out, "-c-40")
-    tensor = out.stdout.decode()
+    tensor = sh.cut("-c-40", _in=sh.tail("-3", _in=sh.grep("total   stress", "-A", 3, fname)))
     return numpy.loadtxt(io.StringIO(tensor))
 
 
