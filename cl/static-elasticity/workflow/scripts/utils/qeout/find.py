@@ -22,7 +22,7 @@ def find_final_pressure(fname):
     return float(re.search(r"P=\s*(-?\d+\.?\d+)", ret.stdout.decode()).group(1))
 
 def find_volume(fname):
-    ret = sh.grep(sh.grep("Begin final coordinates", "-A", 1, fname), "new unit-cell volume")
+    ret = sh.grep("new unit-cell volume", _in=sh.grep("Begin final coordinates", "-A", 1, fname))
     return float(re.search(r"=\s+(\S+)\s+a\.u\.\^3", ret.stdout.decode()).group(1))
 
 
