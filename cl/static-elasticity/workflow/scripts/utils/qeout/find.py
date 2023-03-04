@@ -10,7 +10,7 @@ def find_energy(fname):
     return float(re.search(r"(-?\d+\.?\d+)*\s+Ry", ret.stdout.decode()).group(1))
 
 def find_final_energy(fname):
-    ret = sh.grep(sh.tac(fname), "-m1", "!")
+    ret = sh.grep("-m1", "!",sh.tac(fname))
     return float(re.search(r"(-?\d+\.?\d+)*\s+Ry", ret.stdout.decode()).group(1))
 
 def find_pressure(fname):
@@ -18,7 +18,7 @@ def find_pressure(fname):
     return float(re.search(r"P=\s*(-?\d+\.?\d+)", ret.stdout.decode()).group(1))
 
 def find_final_pressure(fname):
-    ret = sh.grep(sh.tac(fname), "P=", "-m1")
+    ret = sh.grep("P=", "-m1",sh.tac(fname))
     return float(re.search(r"P=\s*(-?\d+\.?\d+)", ret.stdout.decode()).group(1))
 
 def find_volume(fname):
@@ -27,11 +27,11 @@ def find_volume(fname):
 
 
 def find_structure(fname, nat: int):
-    ret = sh.grep("CELL_PARAMETERS", fname, "-A", 3)
+    ret = sh.grep("CELL_PARAMETERS",, "-A", 3, fname)
     _ret = "\n".join(ret.stdout.decode().split("\n")[-5:])
     cell_unit = _ret.split("\n")[0].strip().split()[1][1:-1]
     lattice_parameter = numpy.loadtxt(io.StringIO(_ret), skiprows=1)
-    ret = sh.grep("ATOMIC_POSITIONS", fname, "-A", nat)
+    ret = sh.grep("ATOMIC_POSITIONS", "-A", nat, fname)
     _ret = "\n".join(ret.stdout.decode().split("\n")[-nat-2:])
     atom_unit = _ret.split("\n")[0].strip().split()[1][1:-1]
     unit_cell = []
