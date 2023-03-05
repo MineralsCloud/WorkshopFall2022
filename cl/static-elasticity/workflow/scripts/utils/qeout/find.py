@@ -10,7 +10,7 @@ def find_energy(fname):
     return float(re.search(r"(-?\d+\.?\d+)*\s+Ry", ret.stdout.decode()).group(1))
 
 def find_final_energy(fname):
-    ret = sh.grep("-m1", "!",fname)
+    ret = sh.grep("-m1", "!", fname)
     return float(re.search(r"(-?\d+\.?\d+)*\s+Ry", ret.stdout.decode()).group(1))
 
 def find_pressure(fname):
