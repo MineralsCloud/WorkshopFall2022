@@ -18,7 +18,7 @@ def find_pressure(fname):
     return float(re.search(r"P=\s*(-?\d+\.?\d+)", ret.stdout.decode()).group(1))
 
 def find_final_pressure(fname):
-    ret = sh.grep("P=", "-m1",fname)
+    ret = sh.grep("P=", "-m1", fname)
     return float(re.search(r"P=\s*(-?\d+\.?\d+)", ret.stdout.decode()).group(1))
 
 def find_volume(fname):
