@@ -14,11 +14,11 @@ def find_final_energy(fname):
     return float(re.search(r"(-?\d+\.?\d+)*\s+Ry", ret).group(1))
 
 def find_pressure(fname):
-    ret = sh.grep("P=", _in=sh.tac(fname))
+    ret = sh.grep("P=", fname)
     return float(re.search(r"P=\s*(-?\d+\.?\d+)", ret).group(1))
 
 def find_final_pressure(fname):
-    ret = sh.grep("P=", "-m1", fname)
+    ret = sh.grep("P=", "-m1", _in=sh.tac(fname))
     return float(re.search(r"P=\s*(-?\d+\.?\d+)", ret).group(1))
 
 def find_volume(fname):
